@@ -1,0 +1,113 @@
+
+.auth {
+  min-height: 90vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .img {
+    width: 40%;
+    animation: slide-down 0.5s ease;
+    img {
+      width: 100%;
+      z-index: 1;
+    }
+  }
+
+  .form {
+    min-width: 100%;
+    padding: 3rem;
+    // background-color: rgba(0, 0, 0, 0.829);
+    animation: slide-up 0.5s ease;
+    .icon {
+      color: rgb(0, 0, 0);
+      text-align: center;
+    }
+    form {
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        display: block;
+        font-size: 1.6rem;
+        font-weight: 300;
+        padding: 1rem;
+        margin: 1rem auto;
+        width: 100%;
+        border: 1px solid #777;
+        border-radius: 3px;
+        outline: none;
+      }
+      .password{
+        position: relative;
+        .eye{
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          color: gray;
+        }
+      }
+
+      .links {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+        a {
+          color: #070707;
+        }
+      }
+      p {
+        color: #000000;
+        text-align: center;
+        margin: 1rem;
+      }
+    }
+
+    .btn{
+      background-color: #000000;
+      color: #fff;
+    }
+
+    .register {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+      > * {
+        color: #000000;
+      }
+    }
+
+    .reset {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      > * {
+        color: #000000;
+      }
+    }
+
+    @keyframes slide-down {
+      0% {
+        transform: translateX(50rem);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slide-up {
+      0% {
+        transform: translateX(-50rem);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .img {
+      display: none;
+    }
+  }
+}

@@ -36,7 +36,7 @@ body {
 
 section {
   width: 100%;
-  padding: 8rem 0;
+  padding: 4rem 0;
 }
 
 .container {
@@ -306,6 +306,11 @@ p {
   background: orangered;
 }
 
+.--btn-red {
+  color: #fff;
+  background: red;
+}
+
 .--btn-success {
   color: #fff;
   background: #28a745;
@@ -424,10 +429,10 @@ a {
   transition: all 0.2s;
 }
 
-a:hover {
+/* a:hover {
   color: var(--color-dark);
   font-size: 1.5rem;
-}
+} */
 
 .--border-radius1{
   border-radius: 1rem;
