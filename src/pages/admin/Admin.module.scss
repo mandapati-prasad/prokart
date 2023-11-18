@@ -1,0 +1,16 @@
+.admin {
+  display: flex;
+  .navbar {
+    width: 20%;
+    background-color: red;
+  }
+  .content {
+    width: 100%;
+    padding: 2rem;
+  }
+  @media screen and (max-width: "720px") {
+    .navbar {
+      width: 25%;
+    }
+  }
+}

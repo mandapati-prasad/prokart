@@ -29,7 +29,7 @@ const Login = () => {
     setIsloading(true)
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
-        const user = userCredentials.user;
+        // const user = userCredentials.user;
         setIsloading(false)
         navigate("/")
         toast.success("successfully logged in");
@@ -43,7 +43,7 @@ const Login = () => {
   const singInWithGoogle = () => {
     setIsloading(true);
     signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
+      // const user = result.user;
       setIsloading(false)
       toast.success("Login successfull")
       navigate("/")
@@ -62,7 +62,7 @@ const Login = () => {
           <img src={loginImg} alt="" />
         </div>
         {/* --------------------------form section-------------------------------- */}
-        <Card>
+        <Card className={styles["card"]}>
           <div className={styles.form}>
             <div className={styles["icon"]}>
               <BiSolidUserCircle size={80} />
@@ -75,7 +75,6 @@ const Login = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="on"
                   required
                 />
               </div>
@@ -85,7 +84,6 @@ const Login = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="on"
                   required
                 />
                 <span className={styles.eye} onClick={showPass}>

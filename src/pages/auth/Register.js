@@ -67,7 +67,6 @@ const Register = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="on"
                   required
                 />
               </div>
@@ -77,7 +76,6 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="on"
                   required
                 />
                 <span className={styles.eye} onClick={showPass}>
@@ -90,7 +88,6 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={cPassword}
                   onChange={(e) => setCPassword(e.target.value)}
-                  autoComplete="on"
                   required
                 />
                 <span className={styles.eye} onClick={showCPass}>

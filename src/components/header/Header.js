@@ -9,6 +9,13 @@ import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
 import { onAuthStateChanged } from "firebase/auth";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import {
+  SET_ACTIVE_USER,
+  REMOVE_ACTIVE_USER,
+} from "../../redux/slice/authSlice";
+import { ShowOnLogin, ShowOnLogout } from "../hidelinks/hideLinks";
+import {AdminOnlyLink} from "../adminroute/adminOnlyRoute";
 
 const logo = (
   <div className={styles.logo}>
@@ -23,7 +30,7 @@ const logo = (
 const cart = (
   <span className={styles.cart}>
     <Link to="/cart">
-      Cart
+      {/* Cart */}
       <FaShoppingCart size={20} />
       <p>0</p>
     </Link>
@@ -36,11 +43,12 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const [username, setUsername] = useState("");
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const logout = (e) => {
-    e.preventDefault();
-    setIsloading(true);
+  const signOutUser = () => {
     signOut(auth)
       .then(() => {
         setIsloading(false);
@@ -51,6 +59,12 @@ const Header = () => {
         setIsloading(false);
         toast.error(error.code);
       });
+  };
+
+  const logout = (e) => {
+    e.preventDefault();
+    setIsloading(true);
+    signOutUser();
   };
 
   const toggleMenu = () => {
@@ -64,14 +78,25 @@ const Header = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
-        const name = user.displayName;
-        setUsername(name);
+        if (user.displayName === null) {
+          const name = user.email.substring(0, user.email.indexOf("@"));
+          setUsername(() => name.charAt(0).toUpperCase() + name.slice(1));
+        } else {
+          setUsername(user.displayName);
+        }
+        dispatch(
+          SET_ACTIVE_USER({
+            email: user.email,
+            name: username,
+            id: user.uid,
+          })
+        );
       } else {
         setUsername("");
+        dispatch(REMOVE_ACTIVE_USER());
       }
     });
-  }, []);
+  }, [dispatch, username]);
 
   return (
     <header>
@@ -112,28 +137,47 @@ const Header = () => {
           {/* ----------------------header-right---------------------------- */}
           <div className={styles["header-right"]} onClick={hideMenu}>
             <span className={styles["links"]}>
-              <NavLink className={activeLink} to="/login">
-                Login
-              </NavLink>
+              <ShowOnLogout>
+                <NavLink className={activeLink} to="/login">
+                  Login
+                </NavLink>
+              </ShowOnLogout>
 
               {username && (
-                <a href="#" className={`${styles.user} --color-danger`}>
+                <a href="/">
                   <span className={styles.icon}>
-                    <FaRegUserCircle className="--color-danger" />
+                    <FaRegUserCircle />
                   </span>
-                  {username}
+
+                  <span className={styles.user}>{username}</span>
                 </a>
               )}
 
-              <NavLink className={activeLink} to="/register">
-                Register
-              </NavLink>
-              <NavLink className={activeLink} to="/orders">
-                My Orders
-              </NavLink>
-              <NavLink className={activeLink} to="/logout" onClick={logout}>
-                Logout
-              </NavLink>
+              <ShowOnLogout>
+                <NavLink className={activeLink} to="/register">
+                  Register
+                </NavLink>
+              </ShowOnLogout>
+
+              <ShowOnLogin>
+                <NavLink className={activeLink} to="/orders">
+                  My Orders
+                </NavLink>
+              </ShowOnLogin>
+
+              <ShowOnLogin>
+                <NavLink className={activeLink} to="/logout" onClick={logout}>
+                  Logout
+                </NavLink>
+              </ShowOnLogin>
+
+              <ShowOnLogin>
+                <AdminOnlyLink>
+                  <NavLink className={styles.admin} to="/admin/home">
+                    Admin
+                  </NavLink>
+                </AdminOnlyLink>
+              </ShowOnLogin>
             </span>
             {cart}
           </div>

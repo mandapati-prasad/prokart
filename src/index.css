@@ -10,6 +10,7 @@
   --color-black: #000000;
 
   --color-grey: #eee;
+  --color-red: rgba(225,0,0,1);
   --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 
   --color-purple: #9d0191;
@@ -174,6 +175,10 @@ p {
   color: #fff;
 }
 
+.--text-red{
+  color:rgba(225,0,0,1);
+}
+
 .--color-primary {
   color: #007bff;
 }
@@ -186,6 +191,10 @@ p {
 
 .--color-white {
   color: #fff;
+}
+
+.--color-red{
+  color:var(--color-red);
 }
 
 /* Center Text */

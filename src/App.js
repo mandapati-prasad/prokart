@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, Contact, Login, Register, Reset } from "./pages";
+import { Home, Contact, Login, Register, Reset, Admin } from "./pages";
 import { Header, Footer } from "./components";
 import { ToastContainer, Zoom } from "react-toastify";
+import AdminOnlyRoute from "./components/adminroute/adminOnlyRoute";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <ToastContainer
           theme="light"
           transition={Zoom}
+          autoClose="2000"
           style={{ fontSize: "20px" }}
         />
         <Header />
@@ -19,6 +21,15 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
+
+          <Route
+            path="/admin/*"
+            element={
+              <AdminOnlyRoute>
+                <Admin />
+              </AdminOnlyRoute>
+            }
+          />
         </Routes>
         <Footer />
       </BrowserRouter>
