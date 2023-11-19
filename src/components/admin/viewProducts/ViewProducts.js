@@ -1,13 +1,13 @@
 import {
-  collection,
+  // collection,
   deleteDoc,
   doc,
   // getDocs,
-  onSnapshot,
-  orderBy,
-  query,
+  // onSnapshot,
+  // orderBy,
+  // query,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { db, storage } from "../../../firebase/config";
 import Loader from "../../loader/Loader";
@@ -16,52 +16,66 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { deleteObject, ref } from "firebase/storage";
 import { Confirm } from "notiflix";
-import { useDispatch } from "react-redux";
-import { STORE_PRODUCTS } from "../../../redux/slice/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  STORE_PRODUCTS,
+  selectProducts,
+} from "../../../redux/slice/productSlice";
+import useFetchCollection from "../../../customehooks/useFetchCollection";
 
 const ViewProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading } = useFetchCollection("products");
+  const products = useSelector(selectProducts);
+  // const [products, setProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getAllProducts();
-  }, []);
+    dispatch(
+      STORE_PRODUCTS({
+        products: data,
+      })
+    );
+  }, [dispatch, data]);
 
-  const getAllProducts = () => {
-    setIsLoading(true);
+  // useEffect(() => {
+  //   getAllProducts();
+  // }, []);
 
-    try {
-      // const query = getDocs(collection(db, "products"));
-      // query.then((items) => {
-      //   const allProducts = items.docs.map((doc) => {
-      //     return {id:doc.id,...doc.data()}
-      //   })
-      //   console.log(allProducts)
-      // })
+  // const getAllProducts = () => {
+  //   setIsLoading(true);
 
-      const productRef = collection(db, "products");
-      const q = query(productRef, orderBy("date", "desc"));
-      onSnapshot(q, (snapshot) => {
-        const allproducts = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        // console.log(allproducts)
-        setProducts(allproducts);
-        dispatch(
-          STORE_PRODUCTS({
-            products: allproducts,
-          })
-        );
-        setIsLoading(false);
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.code);
-    }
-  };
+  //   try {
+  //     // const query = getDocs(collection(db, "products"));
+  //     // query.then((items) => {
+  //     //   const allProducts = items.docs.map((doc) => {
+  //     //     return {id:doc.id,...doc.data()}
+  //     //   })
+  //     //   console.log(allProducts)
+  //     // })
+
+  //     const productRef = collection(db, "products");
+  //     const q = query(productRef, orderBy("date", "desc"));
+  //     onSnapshot(q, (snapshot) => {
+  //       const allproducts = snapshot.docs.map((item) => ({
+  //         id: item.id,
+  //         ...item.data(),
+  //       }));
+  //       // console.log(allproducts)
+  //       setProducts(allproducts);
+  //       dispatch(
+  //         STORE_PRODUCTS({
+  //           products: allproducts,
+  //         })
+  //       );
+  //       setIsLoading(false);
+  //     });
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     toast.error(error.code);
+  //   }
+  // };
 
   const confirmDelete = (id, imageURL) => {
     Confirm.show(
@@ -90,14 +104,15 @@ const ViewProducts = () => {
   };
 
   const deleteProduct = async (id, image) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
       await deleteDoc(doc(db, "products", id));
       toast.success("product deleted successfully");
+
       const productRef = ref(storage, image);
       await deleteObject(productRef);
     } catch (error) {
-      setIsLoading(false);
+      // setIsLoading(false);
       toast.error(error.code);
     }
   };
