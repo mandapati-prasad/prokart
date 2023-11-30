@@ -8,7 +8,7 @@ import useFetchCollection from "../../../customehooks/useFetchCollection";
 import { STORE_PRODUCTS, selectProducts } from "../../../redux/slice/productSlice";
 import { CALCULATE_ORDER_AMOUNT, SAVE_ORDER_ITEMS, selectOrderItems, selectTotalAmount } from "../../../redux/slice/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
-import BarChart from "../../charts/BarChart";
+import BarChart from "../../charts/BarChart.js";
 
 
 
