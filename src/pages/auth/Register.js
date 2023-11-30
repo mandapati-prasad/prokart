@@ -54,7 +54,7 @@ const Register = () => {
       {isloading && <Loader />}
       <section className={`container ${styles.auth}`}>
         {/* --------------------------form section start-------------------------------- */}
-        <Card>
+        <Card className={styles["card"]}>
           <div className={styles.form}>
             <div className={styles["icon"]}>
               <BiSolidUserDetail size={80} />

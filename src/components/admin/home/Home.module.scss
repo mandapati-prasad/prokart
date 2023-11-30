@@ -1,0 +1,25 @@
+.info-box {
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.card {
+  border: 1px solid #ccc;
+  // border-bottom: 3px solid var(--light-blue);
+  padding: 5px;
+  background-color: #f5f6fa;
+  box-shadow: 0px 0px 10px 3px rgba(216, 216, 216, 0.712);
+}
+
+.card1 {
+  border-bottom: 3px solid #b624ff;
+}
+.card2 {
+  border-bottom: 3px solid #1f93ff;
+}
+.card3 {
+  border-bottom: 3px solid orangered;
+}
+

@@ -6,52 +6,70 @@ import { AiOutlineGoogle } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/card/Card";
 import { BiShow, BiHide } from "react-icons/bi";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
+import { selectPreviousURL } from "../../redux/slice/cartslice";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isloading, setIsloading] = useState(false);
   const [hidepass, setHidepass] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
+
+  const previourURL = useSelector(selectPreviousURL);
 
   const showPass = () => {
     setHidepass(!hidepass);
   };
 
+  const redirectUser = () => {
+    if (previourURL.includes("cart")) {
+      navigate("/cart");
+    } else {
+      navigate("/");
+    }
+  };
+
   const loginUser = (e) => {
     e.preventDefault();
-    
-    setIsloading(true)
+
+    setIsloading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         // const user = userCredentials.user;
-        setIsloading(false)
-        navigate("/")
+        setIsloading(false);
+        redirectUser();
         toast.success("successfully logged in");
       })
       .catch((error) => {
-        setIsloading(false)
+        setIsloading(false);
         toast.warning(error.code);
       });
   };
 
   const singInWithGoogle = () => {
     setIsloading(true);
-    signInWithPopup(auth, provider).then((result) => {
-      // const user = result.user;
-      setIsloading(false)
-      toast.success("Login successfull")
-      navigate("/")
-    }).catch((error) => {
-      setIsloading(false)
-      toast.error(error.code)
-    })
-  }
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // const user = result.user;
+        setIsloading(false);
+        toast.success("Login successfull");
+        navigate("/");
+      })
+      .catch((error) => {
+        setIsloading(false);
+        toast.error(error.code);
+      });
+  };
 
   return (
     <>
@@ -99,8 +117,10 @@ const Login = () => {
               <p>---- or -----</p>
             </form>
 
-            <button className="--btn --btn-block --btn-red" 
-            onClick={singInWithGoogle}>
+            <button
+              className="--btn --btn-block --btn-red"
+              onClick={singInWithGoogle}
+            >
               <AiOutlineGoogle size={20} />
               Login with Google
             </button>

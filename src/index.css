@@ -325,6 +325,17 @@ p {
   background: #28a745;
 }
 
+.--btn-dark{
+  background-color: black;
+  color: white;
+  transition: all 0.4s;
+}
+
+.--btn-dark:hover{
+  background-color: rgb(219, 219, 219);
+  color: black;
+}
+
 /* Background */
 .--bg-light {
   background: #fff;

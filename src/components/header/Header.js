@@ -9,13 +9,14 @@ import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
 import { onAuthStateChanged } from "firebase/auth";
 import { FaRegUserCircle } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SET_ACTIVE_USER,
   REMOVE_ACTIVE_USER,
 } from "../../redux/slice/authSlice";
 import { ShowOnLogin, ShowOnLogout } from "../hidelinks/hideLinks";
-import {AdminOnlyLink} from "../adminroute/adminOnlyRoute";
+import { AdminOnlyLink } from "../adminroute/adminOnlyRoute";
+import { selectCartItems } from "../../redux/slice/cartslice";
 
 const logo = (
   <div className={styles.logo}>
@@ -27,26 +28,29 @@ const logo = (
   </div>
 );
 
-const cart = (
-  <span className={styles.cart}>
-    <Link to="/cart">
-      {/* Cart */}
-      <FaShoppingCart size={20} />
-      <p>0</p>
-    </Link>
-  </span>
-);
-
 const activeLink = ({ isActive }) => (isActive ? `${styles["active"]}` : " ");
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const [username, setUsername] = useState("");
+  const cartitems = useSelector(selectCartItems);
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const cart = (
+    <span className={styles.cart}>
+      <Link to="/cart">
+        {/* Cart */}
+        <FaShoppingCart size={20} />
+        <p>
+          <b>{cartitems.length}</b>
+        </p>
+      </Link>
+    </span>
+  );
 
   const signOutUser = () => {
     signOut(auth)
@@ -144,13 +148,13 @@ const Header = () => {
               </ShowOnLogout>
 
               {username && (
-                <a href="/">
+                <Link to="/">
                   <span className={styles.icon}>
                     <FaRegUserCircle />
                   </span>
 
                   <span className={styles.user}>{username}</span>
-                </a>
+                </Link>
               )}
 
               <ShowOnLogout>
@@ -160,7 +164,7 @@ const Header = () => {
               </ShowOnLogout>
 
               <ShowOnLogin>
-                <NavLink className={activeLink} to="/orders">
+                <NavLink className={activeLink} to="/order-history">
                   My Orders
                 </NavLink>
               </ShowOnLogin>
@@ -179,12 +183,12 @@ const Header = () => {
                 </AdminOnlyLink>
               </ShowOnLogin>
             </span>
-            {cart}
+            <Link to="/cart">{cart}</Link>
           </div>
         </nav>
 
         <div className={styles["menu-icon"]}>
-          {cart}
+          {/* <Link to="/cart">{cart}</Link> */}
           <RxHamburgerMenu size={22} onClick={toggleMenu} />
         </div>
       </div>

@@ -6,6 +6,7 @@ import Home from "../../components/admin/home/Home";
 import AddProduct from "../../components/admin/addProducts/AddProduct";
 import ViewProducts from "../../components/admin/viewProducts/ViewProducts";
 import Orders from "../../components/admin/orders/Orders";
+import OrderDetails from "../../components/admin/orderDetails/OrderDetails";
 
 const Admin = () => {
   return (
@@ -20,6 +21,7 @@ const Admin = () => {
           <Route path="add-product/:id" element={<AddProduct />} />
           <Route path="products" element={<ViewProducts />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="order-details/:id" element={<OrderDetails />} />
         </Routes>
       </div>
     </div>

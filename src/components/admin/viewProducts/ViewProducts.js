@@ -1,13 +1,5 @@
-import {
-  // collection,
-  deleteDoc,
-  doc,
-  // getDocs,
-  // onSnapshot,
-  // orderBy,
-  // query,
-} from "firebase/firestore";
-import React, { useEffect } from "react";
+import { deleteDoc, doc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { db, storage } from "../../../firebase/config";
 import Loader from "../../loader/Loader";
@@ -22,12 +14,19 @@ import {
   selectProducts,
 } from "../../../redux/slice/productSlice";
 import useFetchCollection from "../../../customehooks/useFetchCollection";
+import {
+  FILTER_BY_SEARCH,
+  selectFilterProducts,
+} from "../../../redux/slice/filterSlice";
+import Search from "../../search/Search";
 
 const ViewProducts = () => {
   const { data, isLoading } = useFetchCollection("products");
   const products = useSelector(selectProducts);
+  const filteredProducts = useSelector(selectFilterProducts);
   // const [products, setProducts] = useState([]);
   // const [isLoading, setIsLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
 
@@ -38,6 +37,15 @@ const ViewProducts = () => {
       })
     );
   }, [dispatch, data]);
+
+  useEffect(() => {
+    dispatch(
+      FILTER_BY_SEARCH({
+        products,
+        search,
+      })
+    );
+  }, [dispatch, search, products]);
 
   // useEffect(() => {
   //   getAllProducts();
@@ -121,47 +129,60 @@ const ViewProducts = () => {
     <>
       {isLoading && <Loader />}
       <div className={styles.table}>
-        <h1>All Products</h1>
-        {products.length === 0 ? (
+        <h2>All Products</h2>
+        <div className={styles.search}>
+          <p>
+            <b>{filteredProducts.length}</b> products
+          </p>
+          <div className={styles.search}>
+            <Search
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+        {filteredProducts.length === 0 ? (
           <p>No result found</p>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((item, index) => {
-                return (
-                  <tr key={item.id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <img src={item.imageURL} alt="" />
-                    </td>
-                    <td>{item.name}</td>
-                    <td>{item.category}</td>
-                    <td>${item.price}</td>
-                    <td className={styles["icons"]}>
-                      <Link to={`/admin/add-product/${item.id}`}>
-                        <FaEdit size={20} color="green" />
-                      </Link>
-                      <FaTrash
-                        size={20}
-                        color="red"
-                        onClick={() => confirmDelete(item.id, item.imageURL)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className={styles["product-container"]}>
+            <table>
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map((item, index) => {
+                  return (
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <img src={item.imageURL} alt="" />
+                      </td>
+                      <td>{item.name}</td>
+                      <td>{item.category}</td>
+                      <td>${item.price}</td>
+                      <td className={styles["icons"]}>
+                        <Link to={`/admin/add-product/${item.id}`}>
+                          <FaEdit size={20} color="green" />
+                        </Link>
+                        <FaTrash
+                          size={20}
+                          color="red"
+                          onClick={() => confirmDelete(item.id, item.imageURL)}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </>

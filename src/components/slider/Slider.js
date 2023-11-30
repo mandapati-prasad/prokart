@@ -7,9 +7,9 @@ const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderLength = sliderData.length;
 
-  let autoScroll = true;
-  let sliderIntervel;
-  let intervel = 5000;
+  // let autoScroll = true;
+  
+  // let intervel = 5000;
 
   const nextSlide = () => {
     setCurrentSlide(currentSlide === sliderLength - 1 ? 0 : currentSlide + 1);
@@ -24,13 +24,17 @@ const Slider = () => {
   }, []);
 
   useEffect(() => {
-    if (autoScroll) {
+    let sliderIntervel;
+    const nextSlide = () => {
+      setCurrentSlide(currentSlide === sliderLength - 1 ? 0 : currentSlide + 1);
+    };
+    if (true) {
         sliderIntervel = setInterval(() => {
           nextSlide();
-        }, intervel);
+        }, 5000);
     }
     return () => clearInterval(sliderIntervel);
-  }, [currentSlide, sliderIntervel]);
+  }, [currentSlide, sliderLength]);
 
   return (
     <div className="slider">

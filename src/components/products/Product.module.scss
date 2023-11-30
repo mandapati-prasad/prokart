@@ -33,6 +33,7 @@
       background-color: #fff;
       border: 2px solid var(--dark-blue);
       position: absolute;
+      top: 0;
       left: -200%;
       height: 100%;
       padding: 1rem;
@@ -45,6 +46,14 @@
       width: 100%;
       .icon {
         display: flex;
+        border: 1px solid transparent;
+        border-radius: 20px;
+        background-color: black;
+        color: white;
+        padding: 0 10px;
+        p{
+          color: white;
+        }
       }
     }
   }

@@ -3,6 +3,16 @@ import { Home, Contact, Login, Register, Reset, Admin } from "./pages";
 import { Header, Footer } from "./components";
 import { ToastContainer, Zoom } from "react-toastify";
 import AdminOnlyRoute from "./components/adminroute/adminOnlyRoute";
+import ProductDetails from "./components/products/productDetails/ProductDetails";
+import Cart from "./pages/cart/Cart";
+import CheckoutDetails from "./pages/checkout/CheckoutDetails";
+import Checkout from "./pages/checkout/Checkout";
+import CheckoutSuccess from "./pages/checkout/CheckoutSuccess";
+import OrderHistroy from "./pages/orderhistory/orderHistroy";
+import OrderDetails from "./pages/orderDetails/OrderDetails";
+import ReviewProduct from "./components/ReviewProduct/ReviewProduct";
+import NotFound from "./pages/notFound/NotFound";
+
 
 function App() {
   return (
@@ -30,6 +40,17 @@ function App() {
               </AdminOnlyRoute>
             }
           />
+
+          <Route path="/product-details/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout-details" element={<CheckoutDetails />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="/order-history" element={<OrderHistroy />} />
+          <Route path="/order-details/:id" element={<OrderDetails />} />
+          <Route path="/review/:id" element={<ReviewProduct />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>
