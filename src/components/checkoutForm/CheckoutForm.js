@@ -112,8 +112,9 @@ const CheckoutForm = () => {
       .confirmPayment({
         elements,
         confirmParams: {
+          // http://localhost:3000/checkout-success
           // Make sure to change this to your payment completion page
-          return_url: "http://localhost:3000/checkout-success",
+          return_url: "https://prokart.onrender.com/checkout-success",
         },
         redirect: "if_required",
       })
